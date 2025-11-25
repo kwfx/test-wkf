@@ -10,5 +10,5 @@ jobs:
       - name: second-cmd
         run: echo "this is the second echo"
       - name: install-nodejs
-        run: apt install nodejs
+        run: sudo apt install nodejs
 
