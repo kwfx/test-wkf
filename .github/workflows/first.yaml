@@ -1,12 +1,14 @@
 name: first-wkf
-runs-on: ubuntu-latest
 on: 
   - push
 jobs:
-  - name: first-cmd
-    run: echo "This is the first echo"
-  - name: second-cmd
-    run: echo "this is the second echo"
-  - name: install-nodejs
-    run: apt install nodejs
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: first-cmd
+        run: echo "This is the first echo"
+      - name: second-cmd
+        run: echo "this is the second echo"
+      - name: install-nodejs
+        run: apt install nodejs
 
