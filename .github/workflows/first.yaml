@@ -2,8 +2,6 @@ name: first-wkf
 runs-on: ubuntu-latest
 on: 
   - push
-    branches: 
-      - main
 jobs:
   - name: first-cmd
     run: echo "This is the first echo"
