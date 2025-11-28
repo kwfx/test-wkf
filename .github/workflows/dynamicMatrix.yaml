@@ -1,0 +1,35 @@
+name: Dynamic Matrix
+on:
+  workflow_dispatch:
+    inputs:
+      os:
+        description: Operating Systems
+        default: "windows-latest,ubuntu-latest"
+        type: string
+      node-version:
+        description: Node Version
+        default: "14,15,16"
+        type: string
+jobs:
+  prepare-matrix:
+    steps:
+      - name: Split string using cut
+        id: split_cut
+        run: |
+          echo "matrix-os=[${{inputs.os}}]" >> $GITHUB_OUTPUT
+          echo "matrix-node-versions=[${{inputs.node-version}}]" >> $GITHUB_OUTPUT
+  node-matrix:
+    needs:
+      - prepare-matrix
+    strategy:
+      matrix:
+        os: ${{fromJson(steps.split_cut.outputs.matrix-os)}}
+        node-version: ${{fromJson(steps.split_cut.outputs.node-versions)}}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: node -v
+      - run: echo '${{ toJson(matrix) }}'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node -v
