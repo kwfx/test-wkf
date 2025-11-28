@@ -19,13 +19,16 @@ jobs:
         run: |
           echo "matrix-os=[${{inputs.os}}]" >> $GITHUB_OUTPUT
           echo "matrix-node-versions=[${{inputs.node-version}}]" >> $GITHUB_OUTPUT
+    outputs:
+      matrix-os: ${{ steps.step1.outputs.matrix-os }}
+      matrix-node-versions: ${{ steps.step2.outputs.matrix-node-versions }}
   node-matrix:
     needs:
       - prepare-matrix
     strategy:
       matrix:
-        os: ${{fromJson(${{steps.split_cut.outputs.matrix-os}})}}
-        node-version: ${{fromJson(${{steps.split_cut.outputs.node-versions}})}}
+        os: ${{fromJson(needs.prepare-matrix.outputs.matrix-os)}}
+        node-version: ${{fromJson(needs.prepare-matrix.outputs.node-versions)}}
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
