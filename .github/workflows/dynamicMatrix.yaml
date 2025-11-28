@@ -19,6 +19,8 @@ jobs:
         with:
           script: "return {os: context.payload.inputs.os.split(','), versions: context.payload.inputs.nodeVersion.split(',')}"
           result-encoding: json
+      - name: "Result of split function"
+        run: echo ${{ steps.split_inputs.outputs.result }}
     outputs:
       matrix: ${{ steps.split_inputs.outputs.result }}
   node-matrix:
@@ -27,7 +29,7 @@ jobs:
     strategy:
       matrix:
         os: ${{fromJson(needs.prepare-matrix.outputs.matrix.os)}}
-        node-version: ${{fromJson(needs.prepare-matrix.outputs.versions)}}
+        node-version: ${{fromJson(needs.prepare-matrix.outputs.matrix.versions)}}
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
