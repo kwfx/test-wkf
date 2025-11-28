@@ -6,7 +6,7 @@ on:
         description: Operating Systems
         default: "windows-latest,ubuntu-latest"
         type: string
-      node-version:
+      nodeVersion:
         description: Node Version
         default: "14,15,16"
         type: string
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/github-script@v8
         id: split_inputs
         with:
-          script: "return {os: context.payload.inputs.os.split(','), versions: context.payload.inputs.node-version.split(',')}"
+          script: "return {os: context.payload.inputs.os.split(','), versions: context.payload.inputs.nodeVersion.split(',')}"
           result-encoding: json
     outputs:
       matrix: ${{ steps.split_inputs.outputs.result }}
