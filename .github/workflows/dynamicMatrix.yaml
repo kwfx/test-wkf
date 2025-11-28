@@ -20,8 +20,8 @@ jobs:
           echo "matrix-os=[${{inputs.os}}]" >> $GITHUB_OUTPUT
           echo "matrix-node-versions=[${{inputs.node-version}}]" >> $GITHUB_OUTPUT
     outputs:
-      matrix-os: ${{ steps.step1.outputs.matrix-os }}
-      matrix-node-versions: ${{ steps.step2.outputs.matrix-node-versions }}
+      matrix-os: ${{ steps.split_cut.outputs.matrix-os }}
+      matrix-node-versions: ${{ steps.split_cut.outputs.matrix-node-versions }}
   node-matrix:
     needs:
       - prepare-matrix
