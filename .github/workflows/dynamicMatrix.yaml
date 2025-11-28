@@ -17,8 +17,8 @@ jobs:
       - name: Split string using cut
         id: split_cut
         run: |
-          echo "matrix-os='[${{inputs.os}}]'" >> $GITHUB_OUTPUT
-          echo "matrix-node-versions='[${{inputs.node-version}}]'" >> $GITHUB_OUTPUT
+          echo "matrix-os=${{inputs.os}}" >> $GITHUB_OUTPUT
+          echo "matrix-node-versions=${{inputs.node-version}}" >> $GITHUB_OUTPUT
     outputs:
       matrix-os: ${{ steps.split_cut.outputs.matrix-os }}
       matrix-node-versions: ${{ steps.split_cut.outputs.matrix-node-versions }}
@@ -27,8 +27,8 @@ jobs:
       - prepare-matrix
     strategy:
       matrix:
-        os: ${{fromJson(needs.prepare-matrix.outputs.matrix-os)}}
-        node-version: ${{fromJson(needs.prepare-matrix.outputs.node-versions)}}
+        os: ${{fromJson(format('[{0}]', needs.prepare-matrix.outputs.matrix-os))}}
+        node-version: ${{fromJson(format('[{0}]', needs.prepare-matrix.outputs.node-versions))}}
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
