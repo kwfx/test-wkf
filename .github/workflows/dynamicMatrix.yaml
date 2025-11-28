@@ -24,8 +24,8 @@ jobs:
       - prepare-matrix
     strategy:
       matrix:
-        os: ${{fromJson(steps.split_cut.outputs.matrix-os)}}
-        node-version: ${{fromJson(steps.split_cut.outputs.node-versions)}}
+        os: ${{fromJson(${{steps.split_cut.outputs.matrix-os}})}}
+        node-version: ${{fromJson(${{steps.split_cut.outputs.node-versions}})}}
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
