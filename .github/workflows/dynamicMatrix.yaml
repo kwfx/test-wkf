@@ -14,21 +14,20 @@ jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
     steps:
-      - name: Split string using cut
-        id: split_cut
-        run: |
-          echo "matrix-os=${{inputs.os}}" >> $GITHUB_OUTPUT
-          echo "matrix-node-versions=${{inputs.node-version}}" >> $GITHUB_OUTPUT
+      - uses: actions/github-script@v8
+        id: split_inputs
+        with:
+          script: return {os: context.payload.inputs.os.split(','), versions: context.payload.inputs.node-version.split(',')}
+          result-encoding: json
     outputs:
-      matrix-os: ${{ steps.split_cut.outputs.matrix-os }}
-      matrix-node-versions: ${{ steps.split_cut.outputs.matrix-node-versions }}
+      matrix: ${{ steps.split_inputs.outputs.result }}
   node-matrix:
     needs:
       - prepare-matrix
     strategy:
       matrix:
-        os: ${{fromJson(format('[{0}]', needs.prepare-matrix.outputs.matrix-os))}}
-        node-version: ${{fromJson(format('[{0}]', needs.prepare-matrix.outputs.node-versions))}}
+        os: ${{fromJson(needs.prepare-matrix.outputs.matrix.os)}}
+        node-version: ${{fromJson(needs.prepare-matrix.outputs.versions)}}
     runs-on: ${{ matrix.os }}
     steps:
       - run: node -v
