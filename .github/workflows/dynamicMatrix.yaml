@@ -12,6 +12,7 @@ on:
         type: string
 jobs:
   prepare-matrix:
+    runs-on: ubuntu-latest
     steps:
       - name: Split string using cut
         id: split_cut
